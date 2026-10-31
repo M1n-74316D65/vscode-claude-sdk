@@ -1,0 +1,142 @@
+{
+  "name": "claude-agent-copilot-provider",
+  "displayName": "Claude Agent SDK for Copilot Chat",
+  "description": "Adds Claude models backed by the Claude Agent SDK to the GitHub Copilot Chat model picker.",
+  "version": "0.1.0",
+  "publisher": "M1n-74316D65",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/M1n-74316D65/vscode-claude-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/M1n-74316D65/vscode-claude-sdk/issues"
+  },
+  "engines": {
+    "vscode": "^1.144.0"
+  },
+  "categories": [
+    "AI",
+    "Chat"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "languageModelChatProviders": [
+      {
+        "vendor": "claude-agent-sdk",
+        "displayName": "Claude Agent SDK",
+        "managementCommand": "claudeAgentLm.manage"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "claudeAgentLmContainer",
+          "title": "Claude Agent SDK",
+          "icon": "images/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "claudeAgentLmContainer": [
+        {
+          "id": "claudeAgentLmFeedback",
+          "name": "Feedback"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "claudeAgentLm.manage",
+        "title": "Manage Claude Agent SDK",
+        "category": "Claude Agent SDK"
+      },
+      {
+        "command": "claudeAgentLm.refreshModels",
+        "title": "Refresh Models",
+        "category": "Claude Agent SDK",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "claudeAgentLm.reportBug",
+        "title": "Report a Bug",
+        "category": "Claude Agent SDK",
+        "icon": "$(bug)"
+      },
+      {
+        "command": "claudeAgentLm.requestFeature",
+        "title": "Request a Feature",
+        "category": "Claude Agent SDK",
+        "icon": "$(lightbulb)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "claudeAgentLm.reportBug",
+          "when": "view == claudeAgentLmFeedback",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Claude Agent SDK",
+      "properties": {
+        "claudeAgentLm.claudeExecutablePath": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Absolute path to the Claude Code executable. Empty uses `claude` from PATH. Required when VS Code is started from a GUI that does not inherit your shell PATH."
+        },
+        "claudeAgentLm.effort": {
+          "type": "string",
+          "enum": [
+            "",
+            "low",
+            "medium",
+            "high",
+            "xhigh",
+            "max"
+          ],
+          "enumDescriptions": [
+            "Model default",
+            "Low",
+            "Medium",
+            "High",
+            "Extra high",
+            "Max"
+          ],
+          "default": "",
+          "markdownDescription": "Reasoning effort for Claude models. Empty uses the model default. Unsupported levels fail the request."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "bun test test",
+    "package": "npm run bundle && vsce package --out artifacts/vsix/claude-agent-copilot-provider-0.1.0.vsix",
+    "bundle": "esbuild src/extension.ts --bundle --platform=node --format=cjs --target=node20 --external:vscode --outfile=dist/extension.js --minify --define:import.meta.url=__importMetaUrl --banner:js='var __importMetaUrl = require(\"url\").pathToFileURL(__filename).href;'"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.316",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/vscode": "1.144.0",
+    "@vscode/vsce": "^4.1.0",
+    "esbuild": "0.28.2",
+    "typescript": "5"
+  },
+  "keywords": [
+    "claude",
+    "anthropic",
+    "copilot",
+    "chat",
+    "language model",
+    "agent sdk"
+  ],
+  "homepage": "https://github.com/M1n-74316D65/vscode-claude-sdk#readme"
+}

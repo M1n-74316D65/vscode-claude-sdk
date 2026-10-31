@@ -1,0 +1,12 @@
+src/**
+test/**
+out/**
+artifacts/**
+images/**/*.md
+**/*.map
+**/*.ts
+tsconfig.json
+bun.lock
+.vscode/**
+.gitignore
+node_modules/**
