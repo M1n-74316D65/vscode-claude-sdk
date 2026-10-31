@@ -10,3 +10,4 @@ bun.lock
 .vscode/**
 .gitignore
 node_modules/**
+build.mjs
