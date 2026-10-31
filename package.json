@@ -2,7 +2,7 @@
   "name": "claude-agent-copilot-provider",
   "displayName": "Claude Agent SDK for Copilot Chat",
   "description": "Adds Claude models backed by the Claude Agent SDK to the GitHub Copilot Chat model picker.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "M1n",
   "license": "MIT",
   "repository": {
@@ -116,7 +116,7 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "test": "bun test test",
-    "package": "npm run bundle && vsce package --out artifacts/vsix/claude-agent-copilot-provider-0.1.0.vsix",
+    "package": "npm run bundle && vsce package --out artifacts/vsix/claude-agent-copilot-provider-$npm_package_version.vsix",
     "bundle": "bun build.mjs"
   },
   "dependencies": {
