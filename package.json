@@ -117,7 +117,7 @@
     "watch": "tsc -watch -p ./",
     "test": "bun test test",
     "package": "npm run bundle && vsce package --out artifacts/vsix/claude-agent-copilot-provider-0.1.0.vsix",
-    "bundle": "esbuild src/extension.ts --bundle --platform=node --format=cjs --target=node20 --external:vscode --outfile=dist/extension.js --minify --define:import.meta.url=__importMetaUrl --banner:js='var __importMetaUrl = require(\"url\").pathToFileURL(__filename).href;'"
+    "bundle": "bun build.mjs"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.3.316",

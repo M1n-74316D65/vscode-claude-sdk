@@ -5,7 +5,7 @@ Adds Claude models (Sonnet, Opus, Haiku) backed by the Claude Agent SDK to the G
 ## Requirements
 
 - VS Code 1.144.0 or newer with GitHub Copilot Chat.
-- Claude Code installed and logged in (`claude` on PATH, or set `claudeAgentLm.claudeExecutablePath`). The extension does not bundle Claude Code.
+- Claude Code installed and logged in. The extension does not bundle Claude Code. Found via `claude` on PATH, then `%LOCALAPPDATA%\Microsoft\WinGet\Links\claude.exe` and `~/.local/bin/claude(.exe)`. Windows: `winget install Anthropic.ClaudeCode`. Or set `claudeAgentLm.claudeExecutablePath`.
 - Authentication: Claude Code login, or `ANTHROPIC_API_KEY` in the environment that starts VS Code.
 
 ## Usage

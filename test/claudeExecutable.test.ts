@@ -1,21 +1,44 @@
 import { describe, expect, test } from "bun:test";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { findOnPath, resolveClaudeExecutable } from "../src/claudeExecutable";
+import { fallbackLocations, findOnPath, resolveClaudeExecutable } from "../src/claudeExecutable";
 
 const dir = mkdtempSync(path.join(os.tmpdir(), "claude-path-"));
 const bin = path.join(dir, "claude");
 writeFileSync(bin, "");
 
+const winDir = mkdtempSync(path.join(os.tmpdir(), "claude-win-"));
+const shim = path.join(winDir, "claude"); // npm shell shim, not runnable on Windows
+const exe = path.join(winDir, "claude.exe");
+writeFileSync(shim, "");
+writeFileSync(exe, "");
+
 describe("findOnPath", () => {
   test("finds the binary in a PATH directory", () => {
-    expect(findOnPath("claude", `/nonexistent${path.delimiter}${dir}`, "darwin")).toBe(bin);
+    expect(findOnPath(`/nonexistent${path.delimiter}${dir}`, "darwin")).toBe(bin);
   });
 
   test("returns undefined when absent or PATH unset", () => {
-    expect(findOnPath("claude", "/nonexistent", "darwin")).toBeUndefined();
-    expect(findOnPath("claude", undefined, "darwin")).toBeUndefined();
+    expect(findOnPath("/nonexistent", "darwin")).toBeUndefined();
+    expect(findOnPath(undefined, "darwin")).toBeUndefined();
+  });
+
+  test("win32 picks claude.exe, not the extensionless shim", () => {
+    expect(findOnPath(winDir, "win32")).toBe(exe);
+  });
+});
+
+describe("fallbackLocations", () => {
+  test("win32 lists WinGet Links and ~/.local/bin", () => {
+    expect(fallbackLocations("win32", { localAppData: "C:\\L", home: "C:\\H" })).toEqual([
+      path.join("C:\\L", "Microsoft", "WinGet", "Links", "claude.exe"),
+      path.join("C:\\H", ".local", "bin", "claude.exe"),
+    ]);
+  });
+
+  test("posix uses ~/.local/bin/claude", () => {
+    expect(fallbackLocations("linux", { home: "/home/u" })).toEqual([path.join("/home/u", ".local", "bin", "claude")]);
   });
 });
 
@@ -28,9 +51,16 @@ describe("resolveClaudeExecutable", () => {
     expect(resolveClaudeExecutable("", dir, "darwin")).toBe(bin);
   });
 
+  test("uses install location when PATH is stale", () => {
+    const home = mkdtempSync(path.join(os.tmpdir(), "claude-home-"));
+    mkdirSync(path.join(home, ".local", "bin"), { recursive: true });
+    const local = path.join(home, ".local", "bin", "claude");
+    writeFileSync(local, "");
+    expect(resolveClaudeExecutable("", "/nonexistent", "darwin", { home })).toBe(local);
+  });
+
   test("throws actionable error when nothing found", () => {
-    expect(() => resolveClaudeExecutable("", "/nonexistent", "darwin")).toThrow(
-      "claudeAgentLm.claudeExecutablePath",
-    );
+    const home = mkdtempSync(path.join(os.tmpdir(), "claude-empty-"));
+    expect(() => resolveClaudeExecutable("", "/nonexistent", "darwin", { home })).toThrow("claudeAgentLm.claudeExecutablePath");
   });
 });

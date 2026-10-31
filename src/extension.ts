@@ -21,6 +21,7 @@ export function activate(ctx: vscode.ExtensionContext): void {
         config.get<string>("claudeExecutablePath", ""),
         process.env.PATH,
         process.platform,
+        { localAppData: process.env.LOCALAPPDATA },
       ),
       effort: config.get<string>("effort", ""),
     };
