@@ -11,3 +11,4 @@ bun.lock
 .gitignore
 node_modules/**
 build.mjs
+images/icon-src.svg

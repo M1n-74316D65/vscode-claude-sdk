@@ -2,9 +2,10 @@
   "name": "claude-agent-copilot-provider",
   "displayName": "Claude Agent SDK for Copilot Chat",
   "description": "Adds Claude models backed by the Claude Agent SDK to the GitHub Copilot Chat model picker.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "M1n",
   "license": "MIT",
+  "icon": "images/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/M1n-74316D65/vscode-claude-sdk.git"

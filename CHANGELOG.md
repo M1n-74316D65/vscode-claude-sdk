@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- New extension icon and activity bar icon.
+
 ## 0.1.1
 
 - Windows: finds `claude.exe` from `winget install Anthropic.ClaudeCode`, with fallbacks to `%LOCALAPPDATA%\Microsoft\WinGet\Links` and `~/.local/bin` when PATH is stale.
